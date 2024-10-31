@@ -2,6 +2,7 @@ const log = require('debug')('synpress:playwright');
 const fetch = require('node-fetch');
 const {
   notificationPageElements,
+  encryptionPublicKeyPageElements,
 } = require('../pages/metamask/notification-page');
 const { pageElements } = require('../pages/metamask/page');
 const {
@@ -186,6 +187,7 @@ module.exports = {
           await module.exports.waitUntilStable(page);
           await module.exports.waitFor(notificationPageElements.notificationAppContent, page);
   
+          /*
           // Perform interactions
           await page.waitForSelector('button[data-testid="page-container-footer-next"]');
           await page.click('button[data-testid="page-container-footer-next"]');
@@ -195,7 +197,14 @@ module.exports = {
           await page.click('button[data-testid="confirmation-submit-button"]');
           await page.waitForSelector('button:has-text("Switch network")');
           await page.click('button:has-text("Switch network")');
-  
+          */
+
+
+          await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmEncryptionPublicKeyButton, page);
+          await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmEncryptionPublicKeyButton, page);
+          await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmationSubmitButton, page);
+          await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmationSwitchAccountButton, page);
+    
           return page;
         }
       }

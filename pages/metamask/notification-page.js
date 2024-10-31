@@ -137,11 +137,15 @@ module.exports.confirmPageElements = {
   confirmButton,
 };
 
-const confirmEncryptionPublicKeyButton = `${notificationPage} [data-testid="page-container-footer-next"]`;
-const rejectEncryptionPublicKeyButton = `${notificationPage} [data-testid="page-container-footer-cancel"]`;
+const confirmEncryptionPublicKeyButton = `button[data-testid="page-container-footer-next"]`;
+const rejectEncryptionPublicKeyButton = `button[data-testid="page-container-footer-cancel"]`;
+const confirmationSubmitButton = `button[data-testid="confirmation-submit-button"]`;
+const confirmationSwitchAccountButton = `button:has-text("Switch network")`;
 module.exports.encryptionPublicKeyPageElements = {
   confirmEncryptionPublicKeyButton,
   rejectEncryptionPublicKeyButton,
+  confirmationSubmitButton,
+  confirmationSwitchAccountButton,
 };
 
 const confirmDecryptionRequestButton = `${notificationPage} [data-testid="page-container-footer-next"]`;
