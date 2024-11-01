@@ -94,6 +94,7 @@ Curious and want to learn more? 🤓
     - [Requirements](#requirements)
     - [Some neat features](#some-neat-features)
     - [How to run e2e tests for Synpress using Docker](#how-to-run-e2e-tests-for-synpress-using-docker)
+    -  [How to run e2e tests for Synpress in local](#how-to-run-e2e-tests-for-synpress-in-local)
   - [💁‍♂️ CI tips \& tricks](#️-ci-tips--tricks)
   - [🧪 Usage \& commands](#-usage--commands)
   - [📃 Environmental variables](#-environmental-variables)
@@ -413,6 +414,14 @@ All examples of setup are present in this repository. Just take a look around.
   [here](https://gitlab.com/synpress/synpress-demo#synpress-gitlab-demo).
 - Use [docker-e2e](https://github.com/Synthetixio/docker-e2e)
 - Synpress is tested and should work on all resolutions, starting from 800x600
+
+## how-to-run-e2e-tests-for-synpress-in-local
+- 1. Navigate to the Synpress folder:
+   ```bash
+   cd path/to/synpress-folder
+- Run the E2E tests with the following command:
+   pnpm synpress:run
+
 
 ## 🧪 Usage & commands
 

@@ -32,7 +32,7 @@ module.exports = defineConfig({
   e2e: {
     testIsolation: false,
     setupNodeEvents,
-    baseUrl: 'https://sphere.market/beam',
+    baseUrl: 'https://testnet.sphere.market',
     specPattern: 'tests/e2e/specs/**/*.{js,jsx,ts,tsx}',
     supportFile,
   },

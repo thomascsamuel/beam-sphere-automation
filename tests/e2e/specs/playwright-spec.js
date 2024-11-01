@@ -31,7 +31,7 @@ describe('Playwright', () => {
     });
 
     it('should sign in and connect with MetaMask', () => {
-      cy.visit('https://testnet.sphere.market');
+      cy.visit(Cypress.config().baseUrl);
       cy.contains(sphereHomePageElements.SigninBtn).should('be.visible').click();
       cy.get(sphereHomePageElements.metamaskConnectButton).should('be.visible').click();
       cy.switchToMetamaskNotification({ interactionMethod: "interactWithNotificationElements" });
