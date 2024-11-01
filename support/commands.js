@@ -1,8 +1,6 @@
 import '@testing-library/cypress/add-commands';
 import 'cypress-wait-until';
 
-// playwright commands
-
 Cypress.Commands.add('initPlaywright', () => {
   return cy.task('initPlaywright');
 });
@@ -31,8 +29,8 @@ Cypress.Commands.add('switchToMetamaskWindow', () => {
   return cy.task('switchToMetamaskWindow');
 });
 
-Cypress.Commands.add('switchToMetamaskNotification', () => {
-  return cy.task('switchToMetamaskNotification');
+Cypress.Commands.add('switchToMetamaskNotification', (options) => {
+  return cy.task('switchToMetamaskNotification', options);
 });
 
 Cypress.Commands.add('performMetamaskAction', () => {
@@ -42,6 +40,20 @@ Cypress.Commands.add('performMetamaskAction', () => {
 
 Cypress.Commands.add('switchToMetamaskNotificationFurtherAction', () => {
   return cy.task('switchToMetamaskNotificationFurtherAction');
+});
+
+Cypress.Commands.add('checkoutToCart', () => {
+  return cy.task('checkoutToCart', {
+    page: cy.state('window')
+  });
+});
+
+Cypress.Commands.add('interactWithNotificationElements', () => {
+  return cy.task('interactWithNotificationElements');
+});
+
+Cypress.Commands.add('findMetamaskNotificationWindow', () => {
+  return cy.task('findMetamaskNotificationWindow');
 });
 
 Cypress.Commands.add('addMetamaskNetwork', network => {
@@ -279,6 +291,7 @@ Cypress.Commands.add('fetchMetamaskWalletAddress', () => {
     return address;
   });
 });
+
 
 Cypress.Commands.add(
   'setupMetamask',

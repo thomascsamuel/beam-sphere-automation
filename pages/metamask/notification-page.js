@@ -141,11 +141,13 @@ const confirmEncryptionPublicKeyButton = `button[data-testid="page-container-foo
 const rejectEncryptionPublicKeyButton = `button[data-testid="page-container-footer-cancel"]`;
 const confirmationSubmitButton = `button[data-testid="confirmation-submit-button"]`;
 const confirmationSwitchAccountButton = `button:has-text("Switch network")`;
-module.exports.encryptionPublicKeyPageElements = {
+const confirmationSigninAccountButton = `button.button.btn--rounded.btn-primary.page-container__footer-button[data-testid="page-container-footer-next"]`;
+ module.exports.encryptionPublicKeyPageElements = {
   confirmEncryptionPublicKeyButton,
   rejectEncryptionPublicKeyButton,
   confirmationSubmitButton,
   confirmationSwitchAccountButton,
+  confirmationSigninAccountButton,
 };
 
 const confirmDecryptionRequestButton = `${notificationPage} [data-testid="page-container-footer-next"]`;

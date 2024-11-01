@@ -53,6 +53,7 @@ declare namespace Cypress {
      * @example
      * cy.getCurrentNetwork()
      */
+    
     performMetamaskAction(): Chainable<Subject>;
     /**
      * 
@@ -492,6 +493,14 @@ declare namespace Cypress {
      * cy.waitForResources([{name:"fa-solid-900.woff2"}])
      * cy.waitForResources([{name:"fonts.gstatic.com/s/worksans",number:2}])
      */
+
+    checkoutToCart(): Chainable<boolean>;
+    /**
+     * Wait until all XHR requests are finished (networkidle0)
+     *  
+     * 
+     */
+
     waitForResources(
       resources?: Array<{ name: string; number?: number }>,
     ): Chainable<Subject>;

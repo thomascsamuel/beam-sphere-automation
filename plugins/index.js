@@ -61,7 +61,9 @@ module.exports = (on, config) => {
     switchToCypressWindow: playwright.switchToCypressWindow,
     performMetamaskAction: playwright.performMetamaskAction,
     switchToMetamaskNotificationFurtherAction: playwright.switchToMetamaskNotificationFurtherAction,
-
+    findMetamaskNotificationWindow: playwright.findMetamaskNotificationWindow,
+    checkoutToCart: playwright.checkoutToCart,
+    interactWithNotificationElements: playwright.interactWithNotificationElements,
     switchToMetamaskWindow: playwright.switchToMetamaskWindow,
     switchToMetamaskNotification: playwright.switchToMetamaskNotification,
     unlockMetamask: metamask.unlock,

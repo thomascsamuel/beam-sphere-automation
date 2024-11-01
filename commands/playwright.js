@@ -4,6 +4,12 @@ const {
   notificationPageElements,
   encryptionPublicKeyPageElements,
 } = require('../pages/metamask/notification-page');
+
+const {
+  sphereNFTPageElements,
+} = require('../pages/beam/sphere-page.js');
+
+
 const { pageElements } = require('../pages/metamask/page');
 const {
   onboardingWelcomePageElements,
@@ -150,6 +156,8 @@ module.exports = {
     }
     return true;
   },
+
+
   async switchToMetamaskWindow() {
     await metamaskWindow.bringToFront();
     await module.exports.assignActiveTabName('metamask');
@@ -165,114 +173,83 @@ module.exports = {
     await module.exports.assignActiveTabName('metamask-popup');
     return true;
   },
-  async switchToMetamaskNotification() {
+
+  async switchToMetamaskNotification(options) {
     const metamaskExtensionId = await module.exports.metamaskExtensionId();
-  
-    const maxRetries = 10;  // Maximum attempts
-    const retryInterval = 500;  // Wait time between attempts (in milliseconds)
+    const notificationPage = await module.exports.findMetamaskNotificationWindow(metamaskExtensionId);
+    if (notificationPage) {
+      const interactionMethod = module.exports[options.interactionMethod];
+      if (typeof interactionMethod === 'function') {
+        await interactionMethod(notificationPage);
+        return notificationPage;
+      } else {
+        throw new Error(`Unknown interaction method: ${options.interactionMethod}`);
+      }
+    }
+    throw new Error("Metamask notification window did not open in time");
+  },
+
+  async findMetamaskNotificationWindow(metamaskExtensionId) {
+    const maxRetries = 10;
+    const retryInterval = 500;
     let retryCount = 0;
-    let notificationFound = false;
-    
+
     while (retryCount < maxRetries) {
       let pages = await browser.contexts()[0].pages();
-      
       for (const page of pages) {
-        if (
-          page.url().includes(`chrome-extension://${metamaskExtensionId}/notification.html`)
-        ) {
-          metamaskNotificationWindow = page;
-          notificationFound = true;
-  
+        if (page.url().includes(`chrome-extension://${metamaskExtensionId}/notification.html`)) {
           await page.bringToFront();
           await module.exports.waitUntilStable(page);
           await module.exports.waitFor(notificationPageElements.notificationAppContent, page);
-  
-          /*
-          // Perform interactions
-          await page.waitForSelector('button[data-testid="page-container-footer-next"]');
-          await page.click('button[data-testid="page-container-footer-next"]');
-          await page.waitForSelector('button[data-testid="page-container-footer-next"]');
-          await page.click('button[data-testid="page-container-footer-next"]');
-          await page.waitForSelector('button[data-testid="confirmation-submit-button"]');
-          await page.click('button[data-testid="confirmation-submit-button"]');
-          await page.waitForSelector('button:has-text("Switch network")');
-          await page.click('button:has-text("Switch network")');
-          */
-
-
-          await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmEncryptionPublicKeyButton, page);
-          await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmEncryptionPublicKeyButton, page);
-          await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmationSubmitButton, page);
-          await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmationSwitchAccountButton, page);
-    
           return page;
         }
       }
-      
-      if (notificationFound) break;
-  
-      // If the notification window is not found, wait and retry
       retryCount++;
       await new Promise(resolve => setTimeout(resolve, retryInterval));
     }
-  
-    if (!notificationFound) {
-      throw new Error("Metamask notification window did not open in time");
-    }
+    return null;
   },
-  
 
-  /////
-  async switchToMetamaskNotificationFurtherAction() {
-    const metamaskExtensionId = await module.exports.metamaskExtensionId();
-  
-    const maxRetries = 10;  // Maximum attempts
-    const retryInterval = 500;  // Wait time between attempts (in milliseconds)
-    let retryCount = 0;
-    let notificationFound = false;
-    
-    while (retryCount < maxRetries) {
-      let pages = await browser.contexts()[0].pages();
-      
-      for (const page of pages) {
-        if (
-          page.url().includes(`chrome-extension://${metamaskExtensionId}/notification.html`)
-        ) {
-          metamaskNotificationWindow = page;
-          notificationFound = true;
-  
-          await page.bringToFront();
-          await module.exports.waitUntilStable(page);
-          await module.exports.waitFor(notificationPageElements.notificationAppContent, page);
-  
-          // Perform interactions
-          
-          await page.waitForSelector('button.button.btn--rounded.btn-primary.page-container__footer-button[data-testid="page-container-footer-next"]');
-          await page.click('button.button.btn--rounded.btn-primary.page-container__footer-button[data-testid="page-container-footer-next"]', { force: true });
-       
-  
-          return page;
-        }
+  async interactWithNotificationElements(page) {
+    await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmEncryptionPublicKeyButton, page);
+    await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmEncryptionPublicKeyButton, page);
+    await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmationSubmitButton, page);
+    await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmationSwitchAccountButton, page);
+  },
+
+
+  async switchToMetamaskNotificationFurtherAction(page) {
+    await module.exports.waitAndClick(encryptionPublicKeyPageElements.confirmationSigninAccountButton, page);
+  },
+
+  async navigateSphere() {
+
+
+  },
+
+  async checkoutToCart(page) {
+    const elements = [
+      sphereNFTPageElements.navCollectionsButton,
+      sphereNFTPageElements.firstCollectionCard,
+      sphereNFTPageElements.firstTokenImage,
+      sphereNFTPageElements.buyNowButton,
+      sphereNFTPageElements.insufficientBalanceMessage,
+    ];
+
+    await elements.reduce(async (prev, curr) => {
+      await prev;
+
+      // Wait for the current element to be available
+      const element = await page.waitForSelector(curr, { timeout: 5000 }).catch(() => null);
+      if (element) {
+        console.log(`Clicking element: ${curr}`);
+        await element.click();
+        await page.waitForTimeout(500); // Add a 500ms delay
+      } else {
+        console.error(`Element not found or did not load within timeout: ${curr}`);
       }
-      
-      if (notificationFound) break;
-  
-      // If the notification window is not found, wait and retry
-      retryCount++;
-      await new Promise(resolve => setTimeout(resolve, retryInterval));
-    }
-  
-    if (!notificationFound) {
-      throw new Error("Metamask notification window did not open in time");
-    }
+    }, Promise.resolve());
   },
-  //
-
-  async performMetamaskAction() {            
-    
-    await page.click('button.chakra-button.css-3c3n96');
-
-   },
 
   async waitFor(selector, page = metamaskWindow) {
     await module.exports.waitUntilStable(page);
